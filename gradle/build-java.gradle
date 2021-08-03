@@ -1,0 +1,39 @@
+/* ============================================================================
+   This file contains the configurations for 
+   Java settings
+   ============================================================================
+   
+   Included from: "${rootProject.projectDir}/build.gradle"
+   ============================================================================
+ */
+
+apply plugin: 'java'
+apply plugin: "jacoco"
+
+def jacocoExclude = ['**/Application*', '**/dto/**', '**/crosscutting/**', '**/jpa/**', '**/configuration/**']
+
+jacocoTestReport {
+    dependsOn test
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination file("${buildDir}/reports/jacoco")
+    }
+    afterEvaluate {
+        getClassDirectories().setFrom(classDirectories.files.collect {
+            fileTree(dir: it, exclude: jacocoExclude)
+        })
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = 0.8
+            }
+        }
+    }
+}
+
+check.dependsOn jacocoTestCoverageVerification

@@ -1,0 +1,84 @@
+swagger: "2.0"
+info:
+  description: "This is a Magneto Company Contract for DNA analysis."
+  version: "AWS-FINAL"
+  title: "Magneto Contract - DNA Analysis"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "basp.95@outlook.com"
+host: "baspapp-env.eba-mwmvm5ud.us-east-2.elasticbeanstalk.com"
+
+schemes:
+  - "http"
+paths:
+  /mutant:
+    post:
+      tags:
+        - "Mutant"
+      summary: "Verify DNA, find out if human or mutant DNA."
+      description: ""
+      operationId: "veryfyDna"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "DNA that needs to be analyzed"
+          required: true
+          schema:
+            $ref: "#/definitions/DNA"
+      responses:
+        "200":
+          description: "Return if is mutant DNA"
+        "400":
+          description: "Return if isn't valid DNA"
+        "403":
+          description: "Return if is human DNA"
+  /stats:
+    get:
+      tags:
+        - "Stats"
+      summary: "Get stats with DNA checked"
+      description: ""
+      operationId: "getStats"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      responses:
+        "200":
+          description: "Success response"
+          schema:
+            $ref: "#/definitions/Stats"
+
+definitions:
+  DNA:
+    type: "object"
+    required:
+      - "dna"
+    properties:
+      dna:
+        type: "array"
+        items:
+          type: string
+        example: ["ATGCGA","CAGTGC","TTATGT","AGAAGG","CCCCTA","TCACTG"]
+  Stats:
+    type: "object"
+    properties:
+      count_mutant_dna:
+        type: "integer"
+        format: "int32"
+        example: 40
+      count_human_dna:
+        type: "integer"
+        format: "int32"
+        example: 100
+      ratio:
+        type: "number"
+        format: "double"
+        example: 0.4
+externalDocs:
+  description: "Find out more about Magneto purpose"
+  url: "https://github.com/bryansilvagit/magneto/blob/4120ac3ab80474bd609d470dca26fa184e7da86b/project-resources/Mutantes.pdf"
